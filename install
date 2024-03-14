@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 
 
-$DOCKER_BIN stop dokku-diun && $DOCKER_BIN rm dokku-diun
+source "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")/config"
 
-CONFIG_DIR="/var/lib/dokku/data/diun"
-
-DIUN_IMAGE="crazymax/diun:latest"
-DIUN_COMMAND="serve"
 
 mkdir $CONFIG_DIR
 chown -R "${DOKKU_SYSTEM_USER}:${DOKKU_SYSTEM_GROUP}" $CONFIG_DIR
+
+$DOCKER_BIN stop dokku-diun && $DOCKER_BIN rm dokku-diun
 
 $DOCKER_BIN  run -d --name dokku-diun \
 	-v ${CONFIG_DIR}:/dockerfiles \
