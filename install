@@ -1,18 +1,14 @@
 #!/usr/bin/env bash
 
+source "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")/config"
+
+mkdir "${CONFIG_DIR}"
+chown -R "${DOKKU_SYSTEM_USER}:${DOKKU_SYSTEM_GROUP}" "${CONFIG_DIR}"
 
 $DOCKER_BIN stop dokku-diun && $DOCKER_BIN rm dokku-diun
 
-CONFIG_DIR="/var/lib/dokku/data/diun"
-
-DIUN_IMAGE="crazymax/diun:latest"
-DIUN_COMMAND="serve"
-
-mkdir $CONFIG_DIR
-chown -R "${DOKKU_SYSTEM_USER}:${DOKKU_SYSTEM_GROUP}" $CONFIG_DIR
-
 $DOCKER_BIN  run -d --name dokku-diun \
-	-v ${CONFIG_DIR}:/dockerfiles \
+	-v "${CONFIG_DIR}:/dockerfiles" \
 	-v /var/run/docker.sock:/var/run/docker.sock \
 	-e DIUN_PROVIDERS_DOCKERFILE_PATTERNS=/dockerfiles/*.dockerfile \
 	-e TZ=Europe/Rome \
@@ -22,4 +18,4 @@ $DOCKER_BIN  run -d --name dokku-diun \
 	-e "DIUN_WATCH_SCHEDULE=*/1 * * * *" \
 	-e DIUN_WATCH_JITTER=30s \
 	--restart always \
-	$DIUN_IMAGE $DIUN_COMMAND
+	"${DIUN_IMAGE}" "${DIUN_COMMAND}"

@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
 
-
-CONFIG_DIR="/var/lib/dokku/data/diun"
-CONFIG_FILE="watched_images.yml"
-
-
-
+source "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")/config"
 set -eo pipefail
 [[ $DOKKU_TRACE ]] && set -x
+
 
 update_dockerfiles() {
   declare APP="$1" DOCKER_IMAGE="$2"
@@ -15,6 +11,4 @@ update_dockerfiles() {
   echo "FROM ${DOCKER_IMAGE}" > "${CONFIG_DIR}/${APP}.dockerfile"
 }
 
-
 update_dockerfiles "$@"
-
