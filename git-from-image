@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-source "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")/config"
+source "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")/diun/config"
+
 set -eo pipefail
 [[ $DOKKU_TRACE ]] && set -x
 
