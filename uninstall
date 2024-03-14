@@ -3,5 +3,15 @@
 source "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")/diun/configs"
 
 rm -rf "${CONFIG_DIR}"
-$DOCKER_BIN stop dokku-diun && $DOCKER_BIN rm dokku-diun
 
+if [ ! "$($DOCKER_BIN ps -aqf name=$DIUN_CONTAINER_NAME)" ]; then
+	# if its status is not exited
+	if [ ! "$($DOCKER_BIN ps -aqf status=exited name=$DIUN_CONTAINER_NAME)" ]; then
+		# stop container
+		$DOCKER_BIN stop $DIUN_CONTAINER_NAME
+	fi
+
+	# remove the container
+	$DOCKER_BIN rm $DIUN_CONTAINER_NAME
+
+fi
