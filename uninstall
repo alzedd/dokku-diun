@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+CONFIG_DIR="/var/lib/dokku/data/diun"
+
+rm -rf $CONFIG_DIR
+$DOCKER_BIN stop dokku-diun && $DOCKER_BIN rm dokku-diun
+

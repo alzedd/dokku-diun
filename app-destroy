@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+
+[[ $DOKKU_TRACE ]] && set -x
+
+
+
+CONFIG_DIR="/var/lib/dokku/data/diun"
+
+remove_dockerfile() {
+  declare APP="$1"
+rm -rf "${CONFIG_DIR}/${APP}.dockerfile"
+}
+
+remove_dockerfile "$@"

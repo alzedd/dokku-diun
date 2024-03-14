@@ -1,0 +1,4 @@
+[plugin]
+description = "dokku diun plugin"
+version = "0.0.1-b"
+[plugin.config]
