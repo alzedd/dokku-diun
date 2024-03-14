@@ -2,6 +2,6 @@
 
 source "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")/config"
 
-rm -rf $CONFIG_DIR
+rm -rf "${CONFIG_DIR}"
 $DOCKER_BIN stop dokku-diun && $DOCKER_BIN rm dokku-diun
 

@@ -11,6 +11,4 @@ update_dockerfiles() {
   echo "FROM ${DOCKER_IMAGE}" > "${CONFIG_DIR}/${APP}.dockerfile"
 }
 
-
 update_dockerfiles "$@"
-
