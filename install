@@ -5,9 +5,21 @@ source "$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)")/diun/configs"
 mkdir "${CONFIG_DIR}"
 chown -R "${DOKKU_SYSTEM_USER}:${DOKKU_SYSTEM_GROUP}" "${CONFIG_DIR}"
 
-$DOCKER_BIN stop dokku-diun && $DOCKER_BIN rm dokku-diun
+# if a docker container exists
+if [ ! "$($DOCKER_BIN ps -aqf name=$DIUN_CONTAINER_NAME)" ]; then
+	# if its status is not exited
+	if [ ! "$($DOCKER_BIN ps -aqf status=exited name=$DIUN_CONTAINER_NAME)" ]; then
+		# stop container
+		$DOCKER_BIN stop $DIUN_CONTAINER_NAME
+	fi
 
-$DOCKER_BIN  run -d --name dokku-diun \
+	# remove the container
+	$DOCKER_BIN rm $DIUN_CONTAINER_NAME
+
+fi
+
+# then run a new container with default options
+$DOCKER_BIN  run -d --name $DIUN_CONTAINER_NAME \
 	-v "${CONFIG_DIR}:/dockerfiles" \
 	-v /var/run/docker.sock:/var/run/docker.sock \
 	-e DIUN_PROVIDERS_DOCKERFILE_PATTERNS=/dockerfiles/*.dockerfile \
